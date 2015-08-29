@@ -2,7 +2,7 @@ defmodule PushTheButton.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "rooms:*", PushTheButton.RoomChannel
+   channel "rooms:*", PushTheButton.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

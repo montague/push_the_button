@@ -18,4 +18,17 @@ import "deps/phoenix_html/web/static/js/phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-// import socket from "./socket"
+//import socket from "./socket"
+$(() => {
+  $('#the_target').hover(
+    (e) => {$(e.target).addClass('in')},
+    (e) => {$(e.target).removeClass('in')}
+  );
+});
+import {Socket} from "deps/phoenix/web/static/js/phoenix"
+let socket = new Socket("/socket");
+socket.connect();
+let chan = socket.channel("rooms:lobby", {});
+chan.join().receive("ok", chan => {
+  console.log("Welcome to Phoenix Chat!")
+});
