@@ -19,16 +19,44 @@ import "deps/phoenix_html/web/static/js/phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 //import socket from "./socket"
-$(() => {
-  $('#the_target').hover(
-    (e) => {$(e.target).addClass('in')},
-    (e) => {$(e.target).removeClass('in')}
-  );
-});
 import {Socket} from "deps/phoenix/web/static/js/phoenix"
 let socket = new Socket("/socket");
 socket.connect();
 let chan = socket.channel("rooms:lobby", {});
 chan.join().receive("ok", chan => {
-  console.log("Welcome to Phoenix Chat!")
+  console.log("Welcome to Phoenix Chatfuck!")
+});
+
+chan.on("fuckyou", resp => {
+  console.log("from server")
+  console.log(resp)
+})
+
+chan.on("in", resp => {
+$('#the_target').addClass("in")
+})
+
+chan.on("out", resp => {
+$('#the_target').removeClass("in")
+})
+
+let hoverIn = e => {
+  console.log('hover in')
+  $(e.target).addClass('in')
+  chan.push("in", {})
+}
+let hoverOut = e => {
+  console.log('hover out')
+  $(e.target).removeClass('in')
+  chan.push("out", {})
+}
+
+$(() => {
+  $('#the_target').hover(
+    hoverIn,
+    hoverOut
+  ).click(() => {
+    chan.push("hit_me!")
+    console.log(chan);
+  })
 });
